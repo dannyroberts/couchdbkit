@@ -153,6 +153,7 @@ class Document(schema.Document):
             cls._db = db
         return db
 
+
 DocumentSchema = schema.DocumentSchema
 
 #  properties

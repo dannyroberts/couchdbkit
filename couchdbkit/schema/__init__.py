@@ -156,18 +156,17 @@ threadsafe.
 
 """
 
-from .properties import ALLOWED_PROPERTY_TYPES, Property, StringProperty, \
+from .properties import Property, StringProperty, \
 IntegerProperty, DecimalProperty, BooleanProperty, FloatProperty, \
 DateTimeProperty, DateProperty, TimeProperty, DictProperty, \
 ListProperty, StringListProperty, SetProperty, dict_to_json, list_to_json, \
-value_to_json, MAP_TYPES_PROPERTIES, value_to_python, dict_to_python, \
+value_to_json, value_to_python, dict_to_python, \
 list_to_python, convert_property, value_to_property, LazyDict, LazyList, \
 LazySet
-from .base import ReservedWordError, ALLOWED_PROPERTY_TYPES, \
-DocumentSchema, SchemaProperties, DocumentBase, QueryMixin, \
+
+from .base import ReservedWordError, DocumentSchema, SchemaProperties, DocumentBase, QueryMixin, \
 AttachmentMixin, Document, StaticDocument, valid_id
-from .properties_proxy import SchemaProperty, SchemaListProperty, \
-SchemaDictProperty
+from .properties import SchemaProperty, SchemaListProperty, SchemaDictProperty
 
 def contain(db, *docs):
     """ associate a db to multiple `Document` class"""
