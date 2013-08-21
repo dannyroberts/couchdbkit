@@ -62,7 +62,7 @@ class DocumentSchema(jsonobject.JsonObject):
         return get_dynamic_properties(self)
 
     def clone(self, **kwargs):
-        cls = self.__class__
+        return self
 
     def __delitem__(self, key):
         try:
