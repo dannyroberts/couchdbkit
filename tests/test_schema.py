@@ -890,19 +890,18 @@ class PropertyTestCase(unittest.TestCase):
         def bad_value():
             doc.bar.foo = "bla"
         self.assertRaises(BadValueError, bad_value)
-    
-   
+
     def testDynamicSchemaProperty(self):
         from datetime import datetime
         class A(DocumentSchema):
             s = StringProperty()
-            
+
         a = A(s="foo")
 
         class B(Document):
             s1 = StringProperty()
             s2 = StringProperty()
-            sm = SchemaProperty(a)
+            sm = SchemaProperty(A, default=lambda: a)
         
         b = B()
         self.assert_(b._doc == {'doc_type': 'B', 's1': None, 's2': None,
@@ -1322,28 +1321,13 @@ class PropertyTestCase(unittest.TestCase):
         self.assertEqual(len(a.l), 1)
         self.assertEqual(a.l[0], datetime(2009, 4, 13, 22, 56, 10))
         self.assertEqual(a._doc, {'doc_type': 'A', 'l': ['2009-04-13T22:56:10Z']})
-        a.l.append({ 's': "test"})
-        self.assertEqual(a.l, [datetime(2009, 4, 13, 22, 56, 10), {'s': 'test'}])
-        self.assert_(a._doc == {'doc_type': 'A', 'l': ['2009-04-13T22:56:10Z', {'s': 'test'}]}
-        )
-        
         a.save()
         
         b = A.get(a._id)
         self.assertEqual(len(b.l), 2)
         self.assertEqual(b.l[0], datetime(2009, 4, 13, 22, 56, 10))
-        self.assertEqual(b._doc['l'], ['2009-04-13T22:56:10Z', {'s': 'test'}])
-        
-        
-        a = A(l=["a", "b", "c"])
-        a.save()
-        b = self.db.get(a._id, wrapper=A.wrap)
-        self.assertEqual(a.l, ["a", "b", "c"])
-        b.l = []
-        self.assertEqual(b.l, [])
-        self.assertEqual(b.to_json()['l'], [])
-        
-        
+        self.assertEqual(b._doc['l'], ['2009-04-13T22:56:10Z'])
+
     def testListPropertyNotEmpty(self):
         from datetime import datetime
         class A(Document):
@@ -1587,8 +1571,8 @@ class PropertyTestCase(unittest.TestCase):
         class A2(Document):
             d = DictProperty()
         a2 = A2()            
-        self.assertTrue(a2.validate(required=False))
-        self.assertTrue(a2.validate())
+        # self.assertTrue(a2.validate(required=False))
+        self.assertIsNone(a2.validate())
         
     def testDynamicDictProperty(self):
         from datetime import datetime
