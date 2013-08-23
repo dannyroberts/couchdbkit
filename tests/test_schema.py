@@ -1301,7 +1301,7 @@ class PropertyTestCase(unittest.TestCase):
         a.save()
         
         b = A.get(a._id)
-        self.assertEqual(len(b.l), 2)
+        self.assertEqual(len(b.l), 1)
         self.assertEqual(b.l[0], datetime(2009, 4, 13, 22, 56, 10))
         self.assertEqual(b._doc['l'], ['2009-04-13T22:56:10Z'])
 
